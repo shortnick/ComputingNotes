@@ -7,6 +7,9 @@ psql -U [username] -d [database]
 
 Use that to login, asks for pw. Then db prompt (ends in #). use -c type command in here; to make queries. (semicolon very important)
 
+
+If you get an error like 'permissions denied SQL state: #######': https://stackoverflow.com/questions/14083311/permission-denied-when-trying-to-import-a-csv-file-from-pgadmin
+
 Run from file? \i your_file_name_here (in cwd or with path?)
 
 ##########
@@ -43,3 +46,14 @@ not equal to regular expression,
 	-case insensitive 					!~*
 
 	Usage: SELECT subject FROM topics WHERE subject ~* 'eclipse';
+
+
+Making a backup:
+pg_dump -h db_server -U db_user -W db_name > db.20070725.dump
+Password:__?
+
+    Connecting to a Postgres server named "db_server".
+    Connecting as the Postgres user "db_user".
+    Forcing a password prompt with "-W".
+    Dumping the Postgres database (a "Postgres dump" of the database) named "db_name".
+    Sending the Postgres output to a file named "db.20070725.dump".

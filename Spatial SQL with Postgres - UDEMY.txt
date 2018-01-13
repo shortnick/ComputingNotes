@@ -19,6 +19,9 @@ CREATE EXTENSION postgis;
 
 - Adding Data to QGIS via PostGIS: go to Layer>Add Layer>Add PostGIS Layers (also elephant Icon on left). Click New under connection, bring up a new dialogue box. Name is what you want to call the connection. Service - blank. Host is localhost (or db address). Port - 5432 default. Database is sql_training {individual db name}. SSL mode - disable. Username and PW are same as PostGres instance. Test connect, on success click ok for this whole box. Hit Connect. Should see all the things in your DB come up in the connections window. Select all the layers you want to add to map, click Add at bottom.
 
+Importing a CSV: http://www.postgresqltutorial.com/import-csv-file-into-posgresql-table/
+- Copy command https://www.postgresql.org/docs/9.2/static/sql-copy.html
+
 SQL Commands
 DROP TABLE {table name}; < deletes table from DB
 
