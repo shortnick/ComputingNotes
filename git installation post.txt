@@ -1,0 +1,10 @@
+git installation post
+
+what's github, what's it used for
+
+process of signing up for github: name/pwd, your home page, basics of repos pushes pull requests branches
+- include copious screen shots, maybe a diagram for the basics section 
+
+installing github on your machine
+
+installing git for the command line (dos vs powershell?)

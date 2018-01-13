@@ -1,0 +1,271 @@
+Spatial SQL with Postgres - UDEMY
+
+SEE ALSO: http://revenant.ca/www/postgis/workshop/
+-- a very clearly discussed intro to PostGIS, including indexes and joins
+
+setup: He likes EnterpriseDB downloads, b/c they come with Stackbuilder and that will add in PostGIS for you. If doing a fresh install, make sure to delete old POSTgreSQL /data folder or at least know the password for it. Say yes to all Path and Env variable options in the auto setup.
+
+Using POSTgres 9.x and PostGIS 2.3ish, setting up first DB.
+- Add a new server, name it whatever, use localhost as address.
+- Should just have a postgres section under its Databases section. Going to Schemas > Functions, it may be blank. We want to populate it. (this is already done with pgadmin iv)
+- Use SQL dialogue:
+CREATE EXTENSION postgis;
+- THEN right click on Schema and REFRESH!! (won't sho up otherwise)
+- Should now have about 1000 postGIS functions in here.
+
+* For some things (like Restore) you may need to do File>Prefs>Path>Set Binary and put in the filepath for the SQL/bin folder.
+
+- Restoring from backup: Right click on DB, choose restore. Click the ... next to filepath window. Navigate to location of [dbname].backup, select it. Click ok and restore. Then there's a restore task that happens.
+
+- Adding Data to QGIS via PostGIS: go to Layer>Add Layer>Add PostGIS Layers (also elephant Icon on left). Click New under connection, bring up a new dialogue box. Name is what you want to call the connection. Service - blank. Host is localhost (or db address). Port - 5432 default. Database is sql_training {individual db name}. SSL mode - disable. Username and PW are same as PostGres instance. Test connect, on success click ok for this whole box. Hit Connect. Should see all the things in your DB come up in the connections window. Select all the layers you want to add to map, click Add at bottom.
+
+SQL Commands
+DROP TABLE {table name}; < deletes table from DB
+
+SELECT parcels.* INTO qlayer <- select ?qualifying? parcel records into a [new layer] named qlayer {qlayer seems native to QGIS} FROM parcels, firm, hydro
+WHERE st_intersects(parcels.geometry, firm.geometry) <-intersect function on the physical columns of these two layers' tables
+AND firm.zone = 'AE' <-zone is a column of firm
+
+Lecture 5.10
+Case Statement, aka if-then-else
+
+SELECT x, y, z 
+	CASE 
+		WHEN [conditional statement] THEN [statement of new action]
+		WHEN [conditional statement] THEN [statement of new action]
+		ELSE [default condition]
+	END AS a//[column name]
+FROM [layer name]
+
+can also use geometry as an x,y,z
+
+* x|| ' ' ||y will concatenate x and y with a space between them (the 's enclose a string literal)
+
+5.11
+Aggregate Functions
+
+among things SQL will do as functions, there's a Pearson's correlation: corr(n, x).
+
+get around some data hole issues by adding in clauses like "WHERE [column] > 0" or in a range, etc.
+------------
+
+SELECT statement with columns X,Y,Z
+
+Union ALL
+
+[different] SELECT statement with columns X,Y,Z
+
+[may chain several unions together, ?each will always output as a row?]
+
+ST_Centroid(geometry) - outputs a long digital sequence indicating center of area, 
+ST_X(ST_Centroid(geometry)) and ST_Y(ST_Centroid(geometry))
+give X,Y coords for this point. ST stands for spatial transform.
+
+st_point(x,y) will output a point from those two coords (assuming you're deriving the x,y from something else)
+bringing that into QGIS, Layer>PostGIS>qlayer (or whatever you named it), and may have to add projection too. 
+
+SUM() and AVG() are aggregating functions that act on all values from a column (or which have been selected from a column)
+
+5.12 Potpourri
+SELECT ob_2009, name     
+FROM states
+ORDER BY ob_2009 DESC
+LIMIT 10 		<-give the top 10 states for obesity in descending order, ASC is ascending
+
+OFFSET 20		<- skips over that number of records at the begining of the list. 
+
+WHERE name IN ('New York', 'California', 'Florida')		<-grabs only things with name value in the list
+
+WHERE name IN (SELECT name FROM states WHERE left(name,1) = 'M')     <- inner WHERE defines 'first letter in name is M'
+
+WHERE column value BETWEEN x and y
+ORDER BY column value 
+
+
+-----------------
+
+(SELECT ob_2009, name     
+FROM states
+ORDER BY ob_2009 DESC
+LIMIT 10) 
+
+Union All
+
+(SELECT ob_1995, name     
+FROM states
+ORDER BY ob_1995 DESC
+LIMIT 10)
+
+Union All
+
+(SELECT ob_2009, name     
+FROM states
+ORDER BY ob_2009 DESC
+LIMIT 10)                 <--- Gives 30 rows as a return
+
+DROP Table qlayer;
+SELECT geometry, name
+INTO qlayer
+FROM states WHERE name IN
+(SELECT name FROM
+	(SELECT name, count(name) AS numstates FROM
+		(	
+			(SELECT ob_2009, name     
+			FROM states
+			ORDER BY ob_2009 DESC
+			LIMIT 10) 
+
+			Union All
+
+			(SELECT ob_1995, name     
+			FROM states
+			ORDER BY ob_1995 DESC
+			LIMIT 10)
+
+			Union All
+
+			(SELECT ob_2009, name     
+			FROM states
+			ORDER BY ob_2009 DESC
+			LIMIT 10)  
+		)	
+
+			AS T1 <--- this is a virtual table, T1. it's not saved, but useful for selection
+		GROUP BY name   <-- gives count per state
+		) AS T2 
+	WHERE numstates = 3 <-- selects states that appear in each of the years' top 10
+)  
+
+5.13 Creating and Changing Data
+
+CREATE TABLE nameHere (name text, geometry geometry(Geometry,2261)) <-- the leader in each comma section is column name and the second thing is what sort of data goes in the column. 2261 is a coordinate system, but unsure about rest.
+
+INSERT INTO tableName (columnName1, name2)
+SELECT columnForInsert1, columnForInsert2 FROM anotherTable;
+
+INSERT INTO mytable (name, geometry)
+SELECT name, st_buffer(geometry, 500) FROM parks;
+
+ALTER TABLE mytable
+ADD column parkSize double precision;
+
+UPDATE mytable
+SET parksize = parks.size
+FROM parks
+WHERE parks.name = mytable.name;
+
+5.12 Spatial Functions
+
+CREATE FUNCTION functionName (varName dataType)
+RETURNS TABLE (colName dataType) AS
+$$
+	SELECT namething FROM otherthing
+	WHERE namething > otherthingcol2 AND otherthingcol3 = $1;   <---- $1 means "the first variable"
+$$ LANGUAGE SQL;
+
+CREATE FUNCTION getFloodZone(x text)
+RETURNS TABLE(mygeom geometry)
+$$
+SELECT st_intersection(parcels.geometry, firm.geometry) FROM parcels, frim 
+WHERE 
+st_intersects(parcels.geometry, firm.geometry) 
+AND firm.zone = $1	;
+$$ LANGUAGE SQL;
+
+
+SELECT getFloodZone('X') 
+
+6.15 The Spatial Stuff
+--ref: http://postgis.net/docs/manual-1.3/ch06.html
+
+Adjacent
+SELECT * FROM parcels
+WHERE st_touches(parcels.geometry,
+	(SELECT geometry
+	FROM parcels WHERE parcelkey = xxxxxx))
+
+SELECT sum(asmt)::numeric::money as sumasmt, sum(land)::numeric::money as sumland
+FROM parcels
+WHERE st_touches(parcels.geometry,
+	(SELECT geometry
+	FROM parcels WHERE parcelkey = xxxxxx))
+
+--should yield a row with two columns, the assessed value of all lots that touches xxxxxx, and also their land value
+
+st_contains(a_geom, b_geom) is enclosure
+st_intersects() is anything that crosses into the initial
+
+st_collect(geomtries_plural under one var) 
+aggregate function is similar to Union but just keeps all the geometric individuals in the same basket, maintaining their boundaries.
+
+SELECT COLLECT(GEOM) 
+FROM GEOMTABLE 
+GROUP BY ATTRCOLUMN
+--- will return a separate GEOMETRYCOLLECTION for each distinct value of ATTRCOLUMN.
+
+--What's a spatial index in SQL? he talks about using the spatially indexed functions to make more efficient queries. See "Uses indexes where available" for these functions in the ref for this section
+
+6.17 - Topology Overlay
+Erase function - takes a layer and a feature, returns all of the layer that isn't overlapped with feature.
+st_difference()
+
+st_intersection() will keep attributes from both inputs.
+
+st_symdifference() - symetrical distance.
+
+7.18 - Distance, Adjacency, and Interaction
+crosstab(sql in text)
+AS
+ct(row_name text, col1Name text, col2name text, etc.);
+
+SELECT * FROM
+Crosstab('SELECT a.name::text, b.name::text, 
+	CASE WHEN
+		st_distance(a.geometry, b.geometry, true)*.00062 >50 THEN 1::text
+		ELSE 0::text
+		END AS dist
+		FROM upstate AS a, upstate AS b
+		ORDER BY 1,2'
+		) AS
+		ct(row_name text, Auburn text, Bingham text, Elmira text, Ithaca text, Rochester text, Syracruse text);
+Crosstab() needs an input sql statement inside a set of single quotes, followed by AS ct() with column names and types.
+
+FROM upstate AS a, upstate AS b
+This tricks the DB into thinking of upstate as two different objects a & b, casting names as text. 
+
+st_distance() has optional third parameter true/false where t=spheroid/meters, and false/default = cartesian/degrees.
+
+Order by 1,2 refers to ordering inputs along axis x and axis y (not sure which is which).
+With text input, output is alphabetical. (may have to make sure your ct() inputs are already alphabetized?)
+
+This all should ouput a cross tab where the column names are city names, the first column contains city names, and there's a diagonal of 0's running through it. Other cell values should be distance (in miles, that was the *.00062) between cities. 
+
+You can also do 'Adjacency' by criteria like neighborhood (<50 miles), touches (contiguous), or sharing some attribute, just set the if/then to a boolean or 1/0 output.
+
+Interaction - create an inverse distance weighting table. Do similar, but set CASE statement to 0 distance = 0, but any distance is 1/distance. Can also modify it with distance^2 or distance * special attribute
+
+8.19 - Nearest Neighbor Index
+
+SELECT st_distance(a.geometry, b.geometry, true)*0.00062 
+AS dist, a.name AS aname, b.name AS bname
+FROM upstate AS a, upstate AS b
+WHERE a.name <> b.name
+ORDER BY aname, dist ASC
+
+-- should return a number of city pairs, 
+with the distance between them given, sorted by aname (alphabetical) and increasing distance
+
+a <> b is saying where a is not b
+
+SELECT avg(minddist) as avgNND
+FROM
+(SELECT aname, min(dist) as mindist)
+	FROM (
+		SELECT st_distance(a.geometry, b.geometry, true)*0.00062 
+		AS dist, a.name AS aname, b.name AS bname
+		FROM upstate AS a, upstate AS b
+		WHERE a.name <> b.name
+		ORDER BY aname, dist ASC
+		) AS T1
+	) GROUP BY aname) AS T2
+--- yields the average nearest neighbor distance from all the cities in question

@@ -1,0 +1,22 @@
+Maptime: Git
+July 6, '16
+
+Sam from Mapbox and CUGOS
+http://maptimesea.github.io/2016/07/06/git.html
+
+looking at some standard work-flows
+git is an 'active' workflow- it helps when you're intentional and conscious about it.
+
+not good for binary files (i.e. proprietary standards like Adobe), but tracks line changes (good for things like geoJSON)
+
+cmd to add a new file to current dir: echo.>NEWFILE.txt 
+
+cmd copy a file: copy filepath\filename.txt filepath\newfile.txt
+
+whole directory copy
+copy filepath\folder\*.* filepath\newfolder
+
+have to set git credentials and set your "upstream" master (if you make the directory locally, before the cloud or github version knows about it)
+
+to fork a github project, hit the button on the website, and in your directory on cmd: git clone filepath\filename.git
+

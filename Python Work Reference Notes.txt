@@ -1,0 +1,59 @@
+Python Notes
+
+CSV native module docs- https://docs.python.org/2/library/csv.html
+
+Datetime module - http://www.pythonforbeginners.com/basics/python-datetime-time-examples/
+
+Beautiful Soup Documentation
+https://www.crummy.com/software/BeautifulSoup/bs4/doc/
+
+Requests (library for post/get internet requests)
+http://docs.python-requests.org/en/master/user/quickstart/
+
+Older Excel/.xls libraries
+https://github.com/python-excel/tutorial
+
+VirtualEnv docs
+http://docs.python-guide.org/en/latest/dev/virtualenvs/
+
+Jsan - a JSON parser for python
+https://github.com/skorokithakis/jsane
+
+psychopg2 - library for interfacing POSTgreSQL <--> Python
+http://initd.org/psycopg/docs/index.html
+----- Future, see also: https://public.commandprompt.com/projects/simpycity/wiki
+
+=========================================================
+
+Attribute vs Variable scoping
+With variables, Python follows the LEGB rule: Local, Enclosing, Global, and Builtin. But with attributes, Python follows a different set of rules: First, it looks on the object in question. Then, it looks on the object’s class. Then it follows the inheritance chain up from the object’s class, until it hits “object” at the top.
+http://blog.lerner.co.il/python-attributes/
+============
+
+Python's crazy-ass encoding problem 
+#http://stackoverflow.com/questions/3597480/how-to-make-python-3-print-utf8
+sys.stdout = open(1, 'w', encoding='utf-8', closefd=False); 
+============
+
+Python Compiler Problems/aka vcvarsall.bat
+http://www.pandastack.com/unable-to-find-vcvarsall-bat-how-to-fix-on-windows/
+============
+
+Installing A Wheel - download the file (move into Python's Scripts dir?)
+*check pip install wheel execution
+python -m pip install lxml-3.6.4-cp35-cp35m-win32.whl
+-- cp35 refers to python version BUT so does win32 (this is the standard Python version vs amd64), it's not about your platform OS
+-- if you're using amd64 package on a win32 Python you get 'xxxx is not a supported wheel on this platform.''
+============
+
+Error Handling aka try/except
+try -- https://docs.python.org/3/reference/compound_stmts.html#try
+exceptions -- https://docs.python.org/3/library/exceptions.html
+============
+
+String escaping
+\n <--escaped string for new line
+psycopg2 uses cur.mogrify(xxxxxx) to put things together
+http://initd.org/psycopg/docs/cursor.html#cursor.mogrify
+https://www.compose.com/articles/formatted-sql-in-python-with-psycopgs-mogrify/
+

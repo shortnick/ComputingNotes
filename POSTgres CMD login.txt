@@ -1,0 +1,45 @@
+For each server on pgAdmin, there's an expandable Databases, Login/Group Roles, and Tablespaces
+
+Under Login/Group, create another role if there is only the default. [There's a password assigned here? Missing a step somewhere] Assign it appropriate privileges.
+
+Worked at home: 
+psql -U [username] -d [database]
+
+Use that to login, asks for pw. Then db prompt (ends in #). use -c type command in here; to make queries. (semicolon very important)
+
+Run from file? \i your_file_name_here (in cwd or with path?)
+
+##########
+Commands:
+##########
+
+\d [tablename] - returns column names, data types, and 'modfiers' (e.g. NOT NULL) for table
+\dt - returns list of relations in db; schema | name | type (e.g. table) | owner
+\l - returns list of all dbs on the 'server'
+
+Listing 				Command 	Argument
+Table, index, 
+-view, or sequence 		\d 			name
+Tables 					\dt 		name
+Indexes 				\di 		name
+Sequences 				\ds 		name
+Views 					\dv 		name
+Permissions 			\dp or \z 	name
+System tables 			\dS 		name
+Large objects 			\dl 		name
+Types 					\dT 		name
+Functions 				\df 		name
+Operators 				\do 		name
+Aggregates 				\da 		name
+Comments 				\dd 		name
+Databases 				\l 			name
+
+
+Comparison 								Operator
+regular expression 						~
+regular expression, case insensitive 	~*
+not equal to regular expression 		!~
+not equal to regular expression, 
+	-case insensitive 					!~*
+
+	Usage: SELECT subject FROM topics WHERE subject ~* 'eclipse';

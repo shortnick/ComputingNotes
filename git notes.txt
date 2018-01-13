@@ -1,0 +1,70 @@
+git notes
+
+cmd to add a new file to current dir: echo.>NEWFILE.txt 
+
+Use Git commands to help keep track of changes made to a project:
+
+    git init creates a new Git repository
+    git status inspects the contents of the working directory and staging area
+    git add adds files from the working directory to the staging area
+    git diff shows the difference between the working directory and the staging area
+    git commit permanently stores file changes from the staging area in the repository
+    git log shows a list of all previous commits
+
+most recent commit is the HEAD (must be caps)
+git show HEAD - shows most recent log message and the file changes that happened
+
+git diff is similar, but shows changed lines in red and new lines in green (doesn't require a commit?), may require you to hit 'q' to return to full command line
+
+git checkout HEAD filename.here	- this rolls back the your working directory file to the last commit
+
+git add filename1.file filename1.file - adds both files to the staging area
+
+
+---- Checkouts and Rollbacks
+
+git reset HEAD filename.file - removes this filename from STAGING area, but working directory changes are still there. a commit now will keep a local copy of the 'rolled back' file but not send it to the repository
+
+git reset xxxxx - use the first 5 characters of a commit hash to reset the repository back to that one, discarding all changes since that point
+
+git checkout HEAD filename.file - updates the local working file to the last repository commit, discards local changes.
+
+----- Branch and Merge 
+
+git branch - what branch am i on?
+* indicates currently connected branch
+
+git branch new-branch_here -- no whitespaces, underscore and dash are legal
+
+ git checkout branchname -- switches to named branch
+
+ If A is your master branch, and B is the sub that contains the most recent files
+
+ git checkout A - switches to master branch
+ git merge B - pulls in changes from B, returns message 'Fast-forward' b/c it understands B has more recent commits
+
+ git branch -d branchname - permanently deletes the branch, to be used when all new data had been merged back into the master, or when deemed no longer needed.
+
+
+ ------- Remotes
+
+ git clone [remote location] [local name for clone] -- this pulls down a local copy of an existing repository. should return 'cloning into [local name]'
+
+ git remote -v --- cd into the local clone copy, run this command. should return 'origin [file location (fetch)' 'origin [file location (push)'
+
+git fetch - (run in the local clone directory), will add remote branch to local repository
+
+git merge origin/master - run after git fetch, updates the local master branch based on the remote's master branch
+
+[Work flow notes: The workflow for Git collaborations typically follows this order:
+
+    Fetch and merge changes from the remote
+    Create a branch to work on a new project feature
+    Develop the feature on your branch and commit your work
+    Fetch and merge from the remote again (in case new commits were made while you were working)
+    Push your branch up to the remote for review
+]
+
+git push origin branchname - this should send the remote your branch for their merging
+
+A remote is a Git repository that lives outside your Git project folder. Remotes can live on the web, on a shared network or even in a separate folder on your local computer. Git may or may not automagically use default name origin for a clone's remote?

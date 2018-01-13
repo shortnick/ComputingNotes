@@ -1,0 +1,55 @@
+Hackerrank 10 Days of Stats
+0: Mean Median Mode
+
+
+
+n = int(input())
+a  = list(map(int, input().split()))
+
+def mean(n,a):
+    b = int(0)
+    for i in a:
+        b+= i
+    b = b/n
+    return b
+
+def median(n,a):
+    a.sort()
+    divisor = int(n/2)
+    if divisor%2!=0:
+        return (a[divisor]+a[divisor-1])/2
+    else:
+        return a[divisor]
+
+     
+
+print(mean(n,a))
+print(median(n,a))
+
+
+=================
+
+Day 1: Quartiles (someone else's code)
+count = int(input())
+arr = [int(i) for i in input().split(" ")]
+arr.sort()
+def median(arr):
+    if len(arr) % 2 == 0:
+        a = arr[len(arr)//2-1]
+        b = arr[len(arr)//2]
+        return (a+b)/2
+    else:
+        return arr[len(arr)//2]
+    
+def divide(arr):
+    if len(arr) % 2 == 0:
+        return [arr[:len(arr)//2], arr[len(arr)//2:]]
+    else:
+        return [arr[:len(arr)//2], arr[len(arr)//2+1:]]
+
+q1 = median(divide(arr)[0])
+q2 = median(arr)
+q3 = median(divide(arr)[1])
+print("%.0f" % q1)
+print("%.0f" % q2)
+print("%.0f" % q3)

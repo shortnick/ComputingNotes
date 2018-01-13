@@ -1,0 +1,48 @@
+How to use Express.js in a very basic fashion
+
+Refrences- 
+http://expressjs.com/en/starter/installing.html
+http://expressjs.com/en/starter/static-files.html
+http://www.hacksparrow.com/express-js-tutorial.html
+
+[
+Do these once--
+1. install node.js (download .exe, run)
+
+2. install express.js from cmd: nmp install express
+]
+
+3. save an express index file in your project NAME.js (see template below)
+
+4. also, from that directory location, in the command line call: npm install express   (verify with:npm list)
+
+5. call: node NAME.js (.js might not be necessary)
+
+6. should return a message like "Express server listening on port XXXX"
+
+7. use browser to access http://localhost:XXXX 
+This should be your index.html file (if using the template below)
+
+8. edits/changes to the webpage files are seen by using the browser's refresh function.
+
+Following is the index file that is called via JS (like you'd call a .py) to start a local webserver @ http://localhost:PORT (where port is either defined in command line or below)
+=====================================
+var express = require('express')
+var app = express();
+
+PORT = process.env.PORT || 4400
+DIRECTORY = __dirname /* add: + '/FOLDERNAME' to serve a specific folder*/
+app.use(express.static(DIRECTORY))
+
+app.get('/', function(request, response) {
+  response.sendFile(DIRECTORY + '/index.html')
+});
+
+
+app.listen(PORT, function(error) {
+  if (error) {
+	console.error(error);
+  } else {
+	console.info("==> 🌎  Listening on port %s for %s. Visit http://localhost:%s/ in your browser.", PORT, __dirname, PORT);
+  }
+});

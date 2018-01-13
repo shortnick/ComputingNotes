@@ -1,0 +1,11 @@
+Notes for updating Anita Grasser/underdark's pgrouting guide
+
+Try setting the user name when connecting.
+
+[psql -U postgres] -d dbname -f somefile.sql
+use the brackets to access the general postgres application, sub another username for specific role
+general pw: geographer
+
+pgadmin iv -- which things to use and where to input the sql
+
+use this uri for vienna transit network - http://data.wien.gv.at/daten/geo?service=WFS&request=GetFeature&version=1.1.0&typeName=ogdwien:OEFFLINIENOGD&srsName=EPSG:4326&outputFormat=json

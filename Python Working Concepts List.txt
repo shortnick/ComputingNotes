@@ -1,0 +1,25 @@
+Python Working Concepts List
+
+n = int(input())
+a  = list(map(int, input().split()))
+understand how a takes in a long sequence of integers and makes them into a list
+aka how to map()?
+see brotatoes https://www.hackerrank.com/challenges/s10-quartiles/forum
+========
+how is stdin and stdout treated? are they truly standard?
+
+
+===========
+
+from collections import Counter
+Counter(a).most_common(n)
+this returns a dictionary with the (1 thru n) most common items of list a
+
+==========
+
+Implementing Mode in Python
+http://thelivingpearl.com/2013/10/24/compute-the-average-min-max-and-mode-of-a-list-in-python/
+
+============
+String formatting / conversion
+https://docs.python.org/2.4/lib/typesseq-strings.html

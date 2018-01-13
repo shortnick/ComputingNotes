@@ -1,0 +1,70 @@
+Revenant.ca PostGIS tutorial
+http://revenant.ca/www/postgis/workshop/
+
+OpenGeospatialConsortium standards reference: http://www.opengeospatial.org/standards/sfs
+
+Spatial Column Types:
+	- GEOMETRY (abstract superclass)
+	- POINT (a single coordinate, usually but not necessarily two dimensional)
+	- LINESTRING (a set of two or more coordinates, with a linear interpretation of the path between the coordinates)
+	- LINEARRING (a linestring of three or more coordinates in which the start and end points are the same, usually used to build polygons)
+	- POLYGON (a set of one or more closed linearrings, one exterior ring that defines a bounded area, and a set of interior rings that define exceptions (holes) to the bounded areas)
+	- MULTIPOINT (a set of points)
+	- MULTILINESTRING (a set of linestrings)
+	- MULTIPOLYGON (a set of polygons)
+	- GEOMETRYCOLLECTION (a heterogeneous set of geometries)
+
+Spatial Indexing
+	Most DBs use B-trees as indexes (aka access methods), which are hierarchical, where everything is greater than, less than, or equal to according to the schema. But b/c spatial objects are irregular and interrelated, spatial indexes are based on bounding boxes. 
+
+	PostGIS uses R-trees(https://en.wikipedia.org/wiki/R-tree) which use a hierarchical set of bounding boxes in a balanced tree. Other DBs may use quad or grid based structures.
+
+General spatial DB function categories
+    - construction, for building geometries from text and binary representations
+    - serialization, for outputting geometries into various text and binary representations (like KML, GML, JSON, and SVG)
+    - predicates, for testing relationships between geometries and returning true/false answers
+    - analysis and measurement, for returning numerical summaries (areas, lengths, distances) about geometries
+    - accessors, for stripping out parts from geometries (rings from polygons, points from linestrings, and so on)
+    - builders, that take geometry inputs and build new altered outputs (like unions, differences, buffers, convex hulls and so on)
+    - aggregates, that take geometry sets and return single resultants (union is the most common)
+
+PostGIS adds (robust) spatial types, spatial indexes and spatial functions
+
+OpenSource/Free Software based on PostGIS
+Loading/Extracting
+    Shp2Pgsql
+    ogr2ogr
+    Dxf2PostGIS
+Web-Based
+    Mapserver
+    GeoServer (Java-based WFS / WMS -server )
+    SharpMap SDK - for ASP.NET 2.0
+    MapGuide Open Source (using FDO)
+Desktop
+    uDig
+    QGIS
+    mezoGIS
+    OpenJUMP
+    OpenEV
+    SharpMap SDK for Microsoft.NET 2.0
+    ZigGIS for ArcGIS/ArcObjects.NET
+    GvSIG
+    GRASS
+
+PostGIS usage case studies
+http://www.postgis.org/documentation/casestudies/
+
+
+
+++++++++++++++++++++++++++++++++++++++++
+Section 4: Transforming .shp into SQL
+
+In command prompt navigate to location of .shp, use 
+
+shp2pgsql -s 2270 medford_parks.shp medford_parks > medford_parks.sql psql -f medford_parks.sql workshop
+shp2pgsql [-s 2270]1 [medford_parks.shp]2 [medford_parks]3 [> medford_parks.sql]4 [psql -f medford_parks.sql workshop]5
+[1] -s is spatial reference, followed by ID number
+[2] input shapefile
+[3] output table name
+[4] store results in this file
+[5] put file that follows -f in (existing) database named 'workshop' in postgres
