@@ -1,0 +1,85 @@
+Folium Web Mapping
+
+python import folium
+
+map = folium.Map(location=[lat, long], zoom_start=integer, tiles = "keyword here*")
+*use help(folium.map) for list and options, takes webtiles/customization too
+
+map.save("filename.html") <-- creates somekind of file that points browser to a (default here) web map
+
+
+================
+Adding Points
+
+map.add_child(folium.Marker(location=[lat,long], popup="Text to read here", icon=folium.Icon(color='green')))
+*it's a leaflet marker
+
+fg = folium.FeatureGroup(name="My Map")
+places = [[47.614851, -122.346965], [47.590428, -122.312433], [47.670215, -122.321063]]
+for coordinates in places:
+	fg.add_child(fol.Marker(location=coordinates, popup="Living in Seattle", icon=fol.Icon(color='green')))
+map.add_child(fg) <----add one item, a group of features, into map
+
+		
+	================	
+	Labeling Points
+
+	When passing info into the popup parameter, it's read as HTML (meaning any kind of punctuation will break the map)
+	Instead, pass in an iframe:
+
+	#Create a template HTML string:
+	html = """<p>Volcano: </p> %s <p> is </p> %s <p>meters.</p>"""
+
+	#Create an iframe:
+	iframe = folium.IFrame(html=html % (str(n), str(el)), width=300,height=100)
+
+	#pass the iframe into the popup parameter
+	popup=folium.Popup(iframe)
+
+
+	*non-default markers: param's include radius= , color= , fill=True, fill_color= ,  fill_opacity=(from 0 to 1)
+
+	================	
+	Named Colors That Work (else ?do hex colors?)
+	colors = [
+    'red',
+    'blue',
+    'gray',
+    'darkred',
+    'lightred',
+    'orange',
+    'beige',
+    'green',
+    'darkgreen',
+    'lightgreen',
+    'darkblue',
+    'lightblue',
+    'purple',
+    'darkpurple',
+    'pink',
+    'cadetblue',
+    'lightgray',
+    'black'
+	]
+
+================
+Adding GeoJSON
+
+featuregroup.add_child(folium.GeoJson())
+fg.add_child(fol.GeoJson(data=open(worldfile, 'r', encoding='utf-8-sig').read()))
+
+================
+Chloropleth Map
+fg.add_child(fol.GeoJson(data=(open(worldfile, 'r', encoding='utf-8-sig').read()), style_function=lambda x:{'fillColor':'cyan' if x['properties']['POP2005']<10000000 else 'purple' if x['properties']['POP2005']<100000000 else 'green'}))
+*x['properties']['POP2005 is a number. not sure if we could sub in a functin via variable in this. also not sure what colors are availabe, b/c not same as list above. use hex?
+
+
+================
+Adding Layer Controls
+*make sure feature groups are added to map prior to LayerControl! it looks for all things done via map.add_child() (could indvidual markers be added like this?), and allows them to be checked/unchecked in upper right.
+carto.add_child(fol.LayerControl())
+
+================
+Basic Legend
+https://folium.readthedocs.io/en/latest/quickstart.html#markers - single thing/chloropleth, auto generated
+- Use leaflet? http://leafletjs.com/examples/choropleth/

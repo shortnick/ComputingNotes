@@ -3,6 +3,9 @@ Spatial SQL with Postgres - UDEMY
 SEE ALSO: http://revenant.ca/www/postgis/workshop/
 -- a very clearly discussed intro to PostGIS, including indexes and joins
 
+-- https://www.alberton.info/downloads/postgresql-cheat-sheet.png
+-- https://www.alberton.info/postgresql_meta_info.html
+
 setup: He likes EnterpriseDB downloads, b/c they come with Stackbuilder and that will add in PostGIS for you. If doing a fresh install, make sure to delete old POSTgreSQL /data folder or at least know the password for it. Say yes to all Path and Env variable options in the auto setup.
 
 Using POSTgres 9.x and PostGIS 2.3ish, setting up first DB.

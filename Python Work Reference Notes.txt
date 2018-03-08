@@ -53,7 +53,30 @@ exceptions -- https://docs.python.org/3/library/exceptions.html
 
 String escaping
 \n <--escaped string for new line
-psycopg2 uses cur.mogrify(xxxxxx) to put things together
+============
+
+lambda functions 
+lambda x: x.longitude if x != None else None
+for thing x, do x's self-method longitude if x isn't None, but return None if it is
+
+
+============
+
+psycopg2 sql formating
+
+https://www.alberton.info/downloads/postgresql-cheat-sheet.png
+
+"""
+here = os.getcwd()
+	location = os.path.join(here,csvInput+"TEMP.csv")
+	a = sql.SQL("""COPY "{}"(e, n, z, r, gee, b, y) """).format(sql.SQL(csvInput))
+	b = sql.SQL("""FROM {} DELIMITER ' ' CSV HEADER;""").format(sql.Literal(location))
+"""
+sql.Literal() adds single quotes around thing inside parens
+sql.SQL() adds nothing, but note the " " around the sub-brackets. That's cuz this makes the query case sensitive. Otherwise default is to make thing inside {} into all lowercase and this fucks with tables that have uppercase in name.
+sql.Identifier() is bestused for table and column names
+
+uses cur.mogrify(xxxxxx) to put things together
 http://initd.org/psycopg/docs/cursor.html#cursor.mogrify
 https://www.compose.com/articles/formatted-sql-in-python-with-psycopgs-mogrify/
 

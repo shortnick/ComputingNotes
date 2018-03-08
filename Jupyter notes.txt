@@ -1,0 +1,20 @@
+Jupyter notes.txt
+
+Jupyter is a browser based tool for executing and storing code snippets. 
+Install it via pip install jupyter
+
+There are keyboard shortcuts listed under Jupyter's Help menu
+
+To run: navigate command line to location you want to store notebook, 
+command is 'jupyter notebook', should take a minute and then fire up a browser window
+
+Under New (upper right), you can choose the Python option
+
+Cells can be multiple lines
+alt-enter will give you a new cell
+shift-enter will do same + run the current cell
+
+While cell is framed in gray or blue, press enter to bring up the cursor for editing
+ - should now be green framing
+
+To delete cells - highlight with blue frame (press escape if green), then type 'dd'
