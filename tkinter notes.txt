@@ -1,0 +1,62 @@
+#answers most of the basics, plus accessing Explorer/files and making tabs inside program window
+# https://likegeeks.com/python-gui-examples-tkinter-tutorial/
+
+#list of tkinter objects
+#https://www.tutorialspoint.com/python/python_gui_programming.htm
+
+from tkinter import *
+
+#basic building block
+window=Tk()
+window.wm_title("title goes here")
+
+# Labels are displayed (can be paired with Entry)
+l1=Label(window, height=1, width=10, text-"label goes here")
+l1.grid(row=0, column=0)
+#l1.pack() will also do location, but more default-y behaviors, see http://effbot.org/tkinterbook/pack.htm
+
+#Entry makes your standard text box
+entry_text=StringVar()
+f1=Entry(window, textvariable=entry_text, width=20)
+#note the named StringVar() that it's linked to
+f1.grid(row=1, column=1)
+
+#Buttons
+b1=Button(window, text="Button's displayed text", width=20, command=function_name_here_no_parens)
+b1.grid(row=, column=)
+#command=window.destroy will close the program window
+#to connect an Entry field with a button, use the named StringVar() from the Entry as input in Button's command e.g. NameOfStringVar.get()
+
+#List window
+listing=Listbox(window, height=6, width=55)
+listing.grid(row=2, column=0, rowspan=6, columnspan=2)
+#first 2 grid params are origin, spans say how many rows/cols to use
+#populating list
+for row in database_return_function:
+	listing.insert(END, row)
+
+#Scrollbar
+scroller=Scrollbar(window)
+scroller=grid(row=2, column=2, rowspan=6)
+#then mutually tie the two objects
+listing.configure(yscrollcommand=scroller.set)
+scroller.configure(command=listing.yview)
+
+#getting the data from a clicked row
+#.bind() takes two objects- an action & a function
+listing.bind('<<ListBoxSelect>>', get_selected_row)
+
+def get_selected_row(event):
+	#make this var available outside function
+	global selected_tuple
+	#this selector returns a tuple with one item, so we just select that
+	index=listing.curselection()[0]
+	selected_tuple=listing.get(index)
+
+	#these clear the field for the Entry and then populate it 
+	f1.delete(0,END)
+	f1.insert(END, selected_tuple[1])
+
+
+#runs the program window
+window.mainloop()

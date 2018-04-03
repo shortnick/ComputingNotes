@@ -1,0 +1,9 @@
+pip install pyinstaller
+
+command:
+pyinstaller --onefile --windowed filename.py
+
+Manual
+https://pythonhosted.org/PyInstaller/
+
+-- not actually that simple, didn't produce a .exe file when first run
