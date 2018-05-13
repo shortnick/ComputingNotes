@@ -3,6 +3,8 @@
 
 #list of tkinter objects
 #https://www.tutorialspoint.com/python/python_gui_programming.htm
+#checkbuttons
+#http://zetcode.com/gui/tkinter/widgets/
 
 from tkinter import *
 
@@ -43,7 +45,7 @@ listing.configure(yscrollcommand=scroller.set)
 scroller.configure(command=listing.yview)
 
 #getting the data from a clicked row
-#.bind() takes two objects- an action & a function
+#.bind() takes two objects- a tkinter action & a function
 listing.bind('<<ListBoxSelect>>', get_selected_row)
 
 def get_selected_row(event):
