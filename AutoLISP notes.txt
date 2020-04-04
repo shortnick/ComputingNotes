@@ -1,0 +1,169 @@
+Anthony Hotchkiss - An Introduction to AutoLISP
+- need to learn
+	- how to store a function
+	- how to import a function/name it
+	- how to take user input
+	- how to call built-in functions
+	- how to use SNAP settings
+
+Lesson 1: 
+AutoCAD should include an AutoLISP Programmer's reference somewhere inside it
+
+Entered in command line surrounded by ( )
+
+Command: (load "prog1") loads prog1.lsp from ?somewhere?
+
+to call a function loaded in via program,
+Command: (NAME)
+
+Defining a function:
+(defun NAME ()
+(command PART1 PART2 PART3)
+)
+
+
+function name must immediately follow opening paren. use C: [i.e. defun C:NAME ()], to create function you can call by name from the command line. functions which are variables in other functions cannot be prefaced with C:
+
+
+;;; Saved for future reference:
+AutoLISP execution from menu macros AutoLISP expressions can be contained in menu macros to be executed when the menu label is selected. If you examine the AutoCAD release 11 menu file ACAD.MNU, you will notice that it contains many AutoLISP programs and expressions. I use a personal menu file that I can select from a modified form of the standard ACAD.MNU. A menu item of the form [aux-menu]^C^Cmenu;aux; is placed at a convenient position (I use the 'File' POP menu) in the standard menu, then I place a similar command in my 'AUX.MNU' file to allow easy return to the standard menu. My preference is to leave the standard menu alone, except for this small change so that the regular AutoCAD menus are always available on demand, and any new material is then placed into the aux.mnu menu. Here is a sample of my new POP2 menu which you can use for a basic AutoLISP development environment:  
+***POP2       
+    [Set-ups]
+    	|
+    	|       
+    [Lisp program development]^C^C$p2=p22 $p2=*          
+    	|
+    	|
+
+    **p22
+   	
+   	[Set-ups]       
+   	[Edit-LSP]^C^Cshell ed C:/acad11/lisp/test.lsp;graphscr       
+   	[Test-LSP]^C^C(load "/acad11/lisp/test");(test);       
+   	[Print test.lsp]^C^C(load "/acad11/lisp/printest");(printest);       
+   	[~--]          
+   		| 
+
+In the above, when the POP2 menu 'Set-ups' is selected, one of the choices is 'Lisp program development', and this displays a new page that includes items to edit a file named test.lsp in the subdirectory lisp which is contained in the AutoCAD directory, acad11. The call to the editor in this case is ed, because that is the name of the editor I use. You may substitute edlin or edit or the name of your favorite text editor (provided that it produces ASCII output) in place of this.  This menu macro only edits the file called test.lsp, which is the name I give to the current LISP program that I am developing. To edit any other file, most text editors allow you to choose the filename after the editor has been entered, so you could simply leave out the filename until the editor is running. Edlin requires a filename to be supplied on execution, so simply give the shell command and issue the edlin command from the operating system. 
+;;; End future reference section
+
+Global and Local Vars
+Vars are global by default, and they remain AFTER a function has executed. See value of var by typing Command: !NAME   global vars appear in ATOMLIST.
+
+To declare a local variable, preface with a forward slash and space-- "/ NAME", and this can be combined with globals.
+(defun test1 (a b /c d e f)) has two global vars, a and b, followed by four local vars. the two global vars have to be entered with the function call (test1 2.2 100) *note! (/ x y) can? must? evaluate as 'x divided by y' not 'local vars x and y'
+
+Lesson 2 - AutoLISP program evaluation and control
+Parens, not lines, control how file is evaluated
+
+Special Characters
+\n new line
+\r return
+\" to use character "
+\t tab
+\e escape
+\\ character \
+\nnn character with octal code: nnn
+' quote function
+; prefixes a comment (to end of line)
+" start/end of literal character string
+. " ." is for designating 'doted pairs'
+
+(prompt "This is AutoLISP") This is AutoLISP
+
+(prompt "\nThis is AutoLISP")
+This is AutoLISP
+
+file location \acad\lisp\filename.lsp is \\acad\\list\\filename.lsp
+
+(terpri) - terminate printing, like new line, returns 'nil'
+
+(sin ANGLE) requires a value for ANGLE
+
+(* NUMBER NUMBER NUMBER ...) can take many arguments, returns product of arguments
+
+(setq var1 expr1 var2 expr2 ...) is the basic assignment function, pairs any number of vars with expressions, will return the value of the last expression in the list
+
+(defun NAME (VARIABLE LIST) Function_definition_statements) - first element is name, second is input variables, and all the process functions. returns name of function
+
+Nesting Functions
+For this: X = -b + ( ( ((b**2)-4ac)**(.5) )/2a ), where a = 1.5, b=2.0, c=0.5
+
+First enter a, b, c-
+(setq  a  1.5)       
+(setq  b  2.0)       
+(setq  c  0.5) 
+
+Group/process with nested functions-
+(setq  b2  (*  b  b))       
+(setq  ac4  (*  4  a  c))       
+(setq  a2  (*  a  2))
+
+Manipulate-
+(setq  d  (-  b2  ac4))
+(setq  e  (sqrt  d)) 
+(setq  f  (/  e  a2))       
+(setq  x  (-  f  b))
+
+But can more simply be entered as --
+(setq  a  1.5   
+	b  2.0
+	c  0.5                 
+	b2  (*  b  b)                 
+	ac4  (*  4  a  c)                 
+	a2  (*  a  2)                 
+	d  (-  b2  ac4)                 
+	e  (sqrt  d)                 
+	f   (/  e  a2)                
+	x   (-  f  b)
+)
+
+which is logically--
+(setq a 1.5 b 2.0 c 0.5 b2 (* b b) ac4 (* 4 a c) a2 (* a 2) d (- b2 ac4) e (sqrt d) f (/ e a2) x (- f b)) 
+
+also--
+(setq  a  1.5              
+	b  2.0              
+	c  0.5)    
+(setq x (- (/ (sqrt (- (* b b) (* 4 a c))) (* a 2)) b)) 
+
+Example program--
+ ;  BOX1.LSP, a program to draw a square with origin and length of a side.  
+ ;  
+ (defun  box1 (len)   ; The variable 'len' means the length of side    
+ 	(setq pt1  (getpoint "\nEnter the origin point: ") ; The 'getpoint' function          
+ 	pt2  (polar  pt1  0.0  len) ; Polar requires an angle in radians          
+ 	pt3  (polar  pt2  (/  pi  2.0)  len)  ; 'pi' is built in to AutoLISP          
+ 	pt4  (polar  pt3  pi  len)   ; polar, base-point, angle, distance     
+ 	)         ;  End of setting variables for points     
+ 	(command  "line"  pt1  pt2  pt3  pt4  "c")  ;  Drawing the box 
+ )            ;  End of the 'defun' 
+
+ Usage--
+ (load "box1")
+ (box1 nnn) - where nnn is number representing length
+
+functionused above for pt1
+(getpoint BASE-POINT PROMPT-STRING)
+base-point and prompt-string are optional arguments. now pt1 is in ATOMLIST, but if box1.lsp had been written (defun box1 (len /pt1 pt2 ...)) then they'd be local vars, and !pt2 would return 'nil'
+
+(polar BASE-POINT RADIAN-ANGLE DISTANCE)
+none of these arguments are optional. base-point and radian-angle are referenced to current UCS, returns a point as a list of number in parens
+
+
+
+For autoLISP, a line is defined by opening and closing of a paren statement. For nested parentheticals, the innermost statement is evaluated first. Lists are eval'd according to the first element, remaining elems are taken as arguments
+
+(command "NAME" ARG1 ARG2 ...)
+this is the format for calling a built-in function, aka subr
+
+a note about sub elements, with example (command "line" pt1 pt2 pt3 pt4 "c") 
+if pt1 is not already entered, then substituting (setq pt1 (x y z)) will fail b-c it's looking for a function or subr where x is located in the list. However (set pt1 (quote (x y z))) or (set pt1 '(x y z)) because the quote signals a literal sequence and is not evaluated
+
+Prompt: n> is displayed when there are unclosed parentheticals, and the number signifies how many it's still looking for. you can type out a closing paren and hit enter, should give you n-1>. if not you can try ") --for closing a string literal-- but this is unlikely to end well, go check your program.
+
+
+Lesson 3 - Manipulating lists
+
+
+

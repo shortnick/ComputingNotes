@@ -1,0 +1,26 @@
+https://github.com/Ryshackleton/d3_maptime_III#what-do-i-need-for-this-tutorial
+
+basic marker tutorial
+https://strongriley.github.io/d3/tutorial/circle.html
+
+MAMP is a local webhost
+https://www.mamp.info/en/downloads/
+
+
+Dear Ryan,
+
+I walked out of your talk today. I was very frustrated and angry with how the information was presented and how the topic was approached. My feelings aren't your responsibility, but I do think your talk should be improved in several preparatory aspects. 
+
+As someone who can do well with complicated things when given context and a framework to fit them in, dealing with the initial shotgun approach of 'here's three or four new utilities and programs to use that aren't tonight's given topic' was quite confusing. I left at the 45 minute mark, when you were still talking about mapshaper. Ordinarily, I would try to accommodate my issues with this by skimming through class materials and related topics ahead of time. However, it's impossible to do that when the needed information is posted three hours before the meeting. I can muddle my way through the "HTML, CSS, and javascript" that the description mentioned. Pointing people at a generic webmap intro and brackets.io is inadquate and gives an entirely wrong impression of the type of expertise required for the session. 
+
+It was extra frustrating to choose the MAMP option for a localhost (not having Chrome installed). It took 15 minutes to download and install the program. By the time I was able to open it and think "I have no idea how php works", you'd already moved well ahead. Given my emotional reaction to the problem and the requirement that I interrupt the lecture/move everyone back two topics to fix this (plus we hadn't even begun to discuss D3.js), I decided to leave instead. 
+
+I have some requests for when you conduct talks in the future:
+1) Don't leave important communication about the content until the last minute.
+2) Be honest about what's going to be covered/focused on. (Given the portion of the talk I was there for, saying "Making a webmap from simple data analysis using x, y, z, and D3.js" would have been a better description.)
+3) Be more organized in presenting information. (If sticking strictly to D3.js, maybe give participants prepared data files with sourcing/instructions written down for them?)
+
+Maptime is a volunteer organization and I am grateful that you choose to spend your time this way. I am not trying to make you feel bad or elicit a response from you (it would be more than fine you choose not to respond to this message). Please take this as heartfelt and respectful criticism. 
+
+Sincerely, 
+Nick Short

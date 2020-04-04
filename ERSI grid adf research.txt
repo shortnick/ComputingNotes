@@ -1,0 +1,17 @@
+ESRI rasters in GRASS or QGIS
+https://pvanb.wordpress.com/2010/03/15/esri-rasters-in-grass-or-qgis/comment-page-1/
+
+Working with Raster Data
+https://docs.qgis.org/2.8/en/docs/user_manual/working_with_raster/supported_data.html
+
+QGIS Beginners Manual
+http://archhighland.org.uk/userfiles/file/Mapping%20Made%20Easy%20Manual/QGIS_Beginners_Manual.pdf
+
+QGIS raster to points? - see slideshare link
+https://gis.stackexchange.com/questions/77306/how-to-convert-raster-to-point-in-qgis
+
+ESRI ASCII grids
+http://resources.esri.com/help/9.3/ArcGISDesktop/com/Gp_ToolRef/Spatial_Analyst_Tools/esri_ascii_raster_format.htm
+
+AutoDesk/AutoCAD raster image formats
+https://knowledge.autodesk.com/support/autocad-lt/learn-explore/caas/CloudHelp/cloudhelp/2018/ENU/AutoCAD-LT/files/GUID-E6EDF33B-052A-4A7C-AF7B-870FC6303598-htm.html
