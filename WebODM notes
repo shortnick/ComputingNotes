@@ -1,0 +1,24 @@
+WebODM notes
+https://www.opendronemap.org/webodm/download/
+
+
+first make sure all these are installed (see https://github.com/OpenDroneMap/WebODM/?tab=readme-ov-file#getting-started)
+    Git
+    Docker
+    Docker-compose
+    Python
+    Pip
+
+https://docs.opendronemap.org/installation/
+do this, step 3 seems wrong/outdated
+
+Docker for windows pops up. 
+When done go to http://localhost:8000
+
+https://docs.opendronemap.org/tutorials/
+
+Making a DTM example
+docker run -ti --rm -v /my/project:/datasets/code <my_odm_image> --project-path /datasets --dtm --dem-resolution 2 --smrf-threshold 0.4 --smrf-window 24
+
+# other resource: github full of test data? https://github.com/natowi/photogrammetry_datasets
+also check youtube for ODM workflows
